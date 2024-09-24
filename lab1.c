@@ -82,5 +82,28 @@ char* readString(char* fileName){
  * 
  */
 char* mysteryExplode(const char* str){
-    //TODO: Replace this line with your code
+  int len = strlen(str); // calculate the length of the input string str using the strlen function, 
+  //which returns the number of characters in the string excluding the null terminator.
+    // Calculate the length of the resulting string
+    int resultLen = 0; 
+    for (int i = 1; i <= len; i++) {
+        resultLen += i;  // Add lengths of "string"
+    }//loop calculates the total length of the resulting string. The idea is to add the lengths of progressively longer prefixes of str. 
+    //For each i from 1 to len, we add i to resultLen. (Above)
+
+    // Allocate memory for the result string
+    char* result = (char*)malloc((resultLen + 1) * sizeof(char));
+    if (!result) {
+        return NULL;  // Handle memory allocation failure
+    }
+    int pos = 0;
+    for (int i = 1; i <= len; i++) {
+        // Copy the first 'i' characters from the input string
+        strncpy(result + pos, str, i);
+        pos += i;  // Move the position forward by 'i'
+    }
+    result[resultLen] = '\0';  // Null-terminate the string 
+    //ll substrings have been copied, we add a null terminator at the end of the result string to mark its end.
+
+    return result;
 }
