@@ -11,27 +11,26 @@
  * 
  */
 
-#define MAX_LINE_LENGTH 1024 // Define the maximum length for a line
 char* readString(char* fileName){
     // Open the specified file in read mode
     FILE *file = fopen(fileName, "r");
     // Check if the file was successfully opened
     if (!file) {
-        error("Could not open file"); // Print error message
+        perror("Could not open file"); // Print error message
         return NULL; // Return NULL if the file could not be opened
     }
 
     // Allocate memory for the line to be read
-    char *line = (char*)malloc(MAX_LINE_LENGTH);
+    char *line = (char*)malloc(MAX_LINE_LEN);
     // Check if memory allocation was successful
     if (!line) {
-        error("Memory allocation failed"); // Print error message
+        perror("Memory allocation failed"); // Print error message
         fclose(file); // Close the opened file
         return NULL; // Return NULL if memory allocation fails
     }
 
     // Read the first line from the file
-    if (fgets(line, MAX_LINE_LENGTH, file) == NULL) {
+    if (fgets(line, MAX_LINE_LEN, file) == NULL) {
         free(line); // Free allocated memory if reading fails
         fclose(file); // Close the opened file
         return NULL; // Return NULL if no line was read
@@ -47,15 +46,16 @@ char* readString(char* fileName){
         return NULL; // Return NULL if the temporary file cannot be opened
     }
 
-    char buffer[MAX_LINE_LENGTH]; // Buffer to hold lines from the original file
+    char buffer[MAX_LINE_LEN]; // Buffer to hold lines from the original file
     // Write all lines except the first one to the temporary file
-    while (fgets(buffer, MAX_LINE_LENGTH, file) != NULL) {
+    while (fgets(buffer, MAX_LINE_LEN, file) != NULL) {
         fputs(buffer, tempFile); // Write the buffer to the temporary file
     }
 
     // Close the original and temporary files
     fclose(file);
     fclose(tempFile);
+    line[strcspn(line, "\n")] = 0; //(removes new line)
 
     // Remove the original file from the filesystem
     remove(fileName);
@@ -88,7 +88,7 @@ char* mysteryExplode(const char* str){
     int resultLen = 0; 
     for (int i = 1; i <= len; i++) {
         resultLen += i;  // Add lengths of "string"
-    }//loop calculates the total length of the resulting string. The idea is to add the lengths of progressively longer prefixes of str. 
+    }//loop calculates the total length of the resulting string. Add the lengths of progressively longer prefixes of str. 
     //For each i from 1 to len, we add i to resultLen. (Above)
 
     // Allocate memory for the result string
@@ -103,7 +103,7 @@ char* mysteryExplode(const char* str){
         pos += i;  // Move the position forward by 'i'
     }
     result[resultLen] = '\0';  // Null-terminate the string 
-    //ll substrings have been copied, we add a null terminator at the end of the result string to mark its end.
+    // substrings have been copied, we add a null terminator at the end of the result string to mark its end.
 
     return result;
 }
