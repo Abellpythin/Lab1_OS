@@ -55,7 +55,8 @@ char* readString(char* fileName){
     // Close the original and temporary files
     fclose(file);
     fclose(tempFile);
-    line[strcspn(line, "\n")] = 0; //(removes new line)
+    line[strcspn(line, "\n")] = 0; //(removes new line)- removes the newline character 
+    //from the end of the string line by:replacing it with a null terminator.
 
     // Remove the original file from the filesystem
     remove(fileName);
